@@ -1,9 +1,17 @@
 import json
 import re
 
+def jsonParse(badJson):
+    badJson = re.sub(r"{u\'", "\{\'", badJson)
+    badJson = re.sub(r"u\'",r"\"", badJson)
+    badJson =re.sub(r"\'",r"\"", badJson)
+    print(badJson)
+    return badJson
+
 # import file
 with open('exampledata2.json') as json_data:
-    parsed_emotions = json.load(json_data)
+    print(dir(json_data))
+    parsed_emotions = json.loads(jsonParse(json_data.read()))
     
     # create list of threat scores
     threats = []
@@ -18,7 +26,7 @@ with open('exampledata2.json') as json_data:
         neutral = face['scores']['neutral']
         sadness = face['scores']['sadness']
         surprise = face['scores']['surprise']
-        # print(contempt)
+        print(contempt)
 
         # face data for cropping
         left = face['faceRectangle']['left']
@@ -30,7 +38,4 @@ with open('exampledata2.json') as json_data:
         threat = (anger+contempt*10+disgust*100)*10000 - (happiness+neutral+surprise)*1
         threats.append(threat)
         print(threat)
-
-
-
 
