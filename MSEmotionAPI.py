@@ -31,39 +31,39 @@ def processRequest( json, data, headers, params ):
     while True:
         response = requests.request( 'post', _url, json = json, data = data, headers = headers, params = params, verify=False)
 
-        if response.status_code == 429: 
+        if response.status_code == 429:
 
             print( "Message: %s" % ( response.json()['error']['message'] ) )
 
-            if retries <= _maxNumRetries: 
-                time.sleep(1) 
+            if retries <= _maxNumRetries:
+                time.sleep(1)
                 retries += 1
                 continue
-            else: 
+            else:
                 print( 'Error: failed after retrying!' )
                 break
 
         elif response.status_code == 200 or response.status_code == 201:
 
-            if 'content-length' in response.headers and int(response.headers['content-length']) == 0: 
-                result = None 
-            elif 'content-type' in response.headers and isinstance(response.headers['content-type'], str): 
-                if 'application/json' in response.headers['content-type'].lower(): 
-                    result = response.json() if response.content else None 
-                elif 'image' in response.headers['content-type'].lower(): 
+            if 'content-length' in response.headers and int(response.headers['content-length']) == 0:
+                result = None
+            elif 'content-type' in response.headers and isinstance(response.headers['content-type'], str):
+                if 'application/json' in response.headers['content-type'].lower():
+                    result = response.json() if response.content else None
+                elif 'image' in response.headers['content-type'].lower():
                     result = response.content
         else:
             print( "Error code: %d" % ( response.status_code ) )
             print( "Message: %s" % ( response.json()['error']['message'] ) )
 
         break
-        
+
     return result
 
 def renderResultOnImage( result, img ):
-    
+
     """Display the obtained results onto the input image"""
-    
+
     for currFace in result:
         faceRectangle = currFace['faceRectangle']
         cv2.rectangle( img,(faceRectangle['left'],faceRectangle['top']),
@@ -104,3 +104,4 @@ def processImage(filepath):
 
 	    ig, ax = plt.subplots(figsize=(15, 20))
 	    ax.imshow( img )
+        return result

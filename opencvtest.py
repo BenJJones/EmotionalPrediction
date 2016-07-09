@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import MSEmotionAPI
+import testscore
 
 cap = cv2.VideoCapture(0)
 i = 0
@@ -19,7 +20,7 @@ while(True):
     imageFile = "test" + str(i) + ".png"
     cv2.imwrite(imageFile,frame)
     i += 1
-    MSEmotionAPI.processImage(imageFile)
+    testscore.score(MSEmotionAPI.processImage(imageFile))
 
 # When everything done, release the capture
 cap.release()
