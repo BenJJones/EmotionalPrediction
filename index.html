@@ -2,18 +2,44 @@
  
  <head>
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
+<style>
+    table {
+        border:1px solid black;
+        margin-right: 15px;
+        background-color: white;
+        float:left;
+    }
+    #responseTable {
+        width: 50%;
+    }
+
+    img[src='#']{
+        display:none;
+    }
+
+    body {
+        background-color: #284D6B;
+    }
+
+    h1, caption{
+        color:white;
+    }
+
+</style>
+
  </head>
  
  <body>
+ <center id="centered">
  <h1>Emotional Prediction</h1>
- <p>This example shows how to post an image to the Project Oxford Emotion API using a binary file</p>
- <input type="file" id="filename" name="filename" onchange="readURL(this);">
+ <div><input type="file" id="filename" name="filename" onchange="readURL(this);"></div>
  <img id="blah" src="#" alt="your image" />
- <button id="btn">Click here</button>
+ <div><button name="Comanda" id="btn">Click here</button></div>
  <p id="response"></p>
 
  <div id="responseTable"></div>
- 
+ </center>
  <script type="text/javascript">
  //apiKey: Replace this with your own Project Oxford Emotion API key, please do not use my key. I include it here so you can get up and running quickly but you can get your own key for free at https://www.projectoxford.ai/emotion 
  var apiKey = "1dd1f4e23a5743139399788aa30a7153";
@@ -67,7 +93,6 @@ function readURL(input) {
  {
  var trHTML = '';
  var data = JSON.stringify(response);
- $("#response").text(data);
 
  $.each(response, function(i, item)
  {
@@ -79,15 +104,35 @@ function readURL(input) {
  	trHTML += '<tr><td>Happiness</td><td>' + item.scores.happiness + '</td></tr>';
  	trHTML += '<tr><td>Neutral</td><td>' + item.scores.neutral + '</td></tr>';
  	trHTML += '<tr><td>Sadness</td><td>' + item.scores.sadness + '</td></tr>';
- 	trHTML += '</table>';
+    var threat = (item.scores.anger+item.scores.contempt*10+item.scores.disgust*100)*10000 - (item.scores.happiness+item.scores.neutral+item.scores.surprise);
+    threat = (item.scores.anger+item.scores.contempt+item.scores.disgust) * 10;
+    trHTML += '<tr><td style="color:red;font-weight:bold;">THREAT</td><td style="color:red;font-weight:bold;">' + threat + '</td></tr>';
+    trHTML += '</table>';
+
  });
  $('#responseTable').append(trHTML);
 
  }
 
+ $(':button')
+.click(
+     function ()
+     {
+         $(this).hide();
+     }
+)
+
+ $('input[type=file]')
+.click(
+     function ()
+     {
+         $(this).hide();
+     }
+)
+
 
  setInterval(function() {
- 	
+ 	/*console.log("Hello");*/
  }, 5000);
 
 
