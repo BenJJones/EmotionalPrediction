@@ -1,33 +1,35 @@
 import json
+import re
 
-parsed_emotions = dict()
-
-with open('exampledata.json') as json_data:
+# import file
+with open('exampledata2.json') as json_data:
     parsed_emotions = json.load(json_data)
     
-    # get dict of scores
-    scores = parsed_emotions[0]['scores']
-    
-    # get numerical values for emotions
-    anger = scores['anger']
-    contempt = scores['contempt']
-    disgust = scores['disgust']
-    fear = scores['fear']
-    happiness = scores['happiness']
-    neutral = scores['neutral']
-    sadness = scores['sadness']
-    surprise = scores['surprise']
+    # create list of threat scores
+    threats = []
 
-    # face data for cropping
-    left = parsed_emotions[0]['faceRectangle']['left']
-    top = parsed_emotions[0]['faceRectangle']['top']
-    width = parsed_emotions[0]['faceRectangle']['width']
-    height = parsed_emotions[0]['faceRectangle']['height']
+    for face in parsed_emotions:  
+        # get numerical values for emotions
+        anger = face['scores']['anger']
+        contempt = face['scores']['contempt']
+        disgust = face['scores']['disgust']
+        fear = face['scores']['fear']
+        happiness = face['scores']['happiness']
+        neutral = face['scores']['neutral']
+        sadness = face['scores']['sadness']
+        surprise = face['scores']['surprise']
+        # print(contempt)
 
-    # assess threat 
+        # face data for cropping
+        left = face['faceRectangle']['left']
+        top = face['faceRectangle']['top']
+        width = face['faceRectangle']['width']
+        height = face['faceRectangle']['height']
 
-    threat = (anger*100+contempt*100+disgust*100) - (happiness+surprise)
-    print(threat)
+        # assess threat 
+        threat = (anger+contempt*10+disgust*100)*10000 - (happiness+neutral+surprise)*1
+        threats.append(threat)
+        print(threat)
 
 
 
