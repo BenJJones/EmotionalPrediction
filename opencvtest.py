@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import MSEmotionAPI
 
 cap = cv2.VideoCapture(0)
 i = 0
@@ -13,10 +14,12 @@ while(True):
 
     # Display the resulting frame
     cv2.imshow('frame',frame)
-    if cv2.waitKey(5000) & 0xFF == ord('q'):
+    if cv2.waitKey(500) & 0xFF == ord('q'):
         break
-    cv2.imwrite("test" + str(i) + ".png",frame)
+    imageFile = "test" + str(i) + ".png"
+    cv2.imwrite(imageFile,frame)
     i += 1
+    MSEmotionAPI.processImage(imageFile)
 
 # When everything done, release the capture
 cap.release()
