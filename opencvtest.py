@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 
 cap = cv2.VideoCapture(0)
+i = 0
 
 while(True):
     # Capture frame-by-frame
@@ -12,9 +13,10 @@ while(True):
 
     # Display the resulting frame
     cv2.imshow('frame',frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(5000) & 0xFF == ord('q'):
         break
-    cv2.imwrite("test.png",frame)
+    cv2.imwrite("test" + str(i) + ".png",frame)
+    i += 1
 
 # When everything done, release the capture
 cap.release()
