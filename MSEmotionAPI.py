@@ -1,12 +1,13 @@
+
+#https://github.com/Microsoft/ProjectOxford-ClientSDK/blob/master/Emotion/Python/Jupyter%20Notebook/Emotion%20Analysis%20Example.ipynb
+
 import time, requests, operator
-#import cv2
+import cv2
 import numpy as np
 #from __future__ import print_function
 
 # Import library to display results
 import matplotlib.pyplot as plt
-#%matplotlib inline 
-# Display images within Jupyter
 
 # Variables
 
@@ -29,7 +30,7 @@ def processRequest( json, data, headers, params ):
     result = None
 
     while True:
-        response = requests.request( 'post', _url, json = json, data = data, headers = headers, params = params,verify=False)
+        response = requests.request( 'post', _url, json = json, data = data, headers = headers, params = params, verify=False)
 
         if response.status_code == 429: 
 
@@ -80,7 +81,7 @@ def renderResultOnImage( result, img ):
         cv2.putText( img, textToWrite, (faceRectangle['left'],faceRectangle['top']-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 1 )
 
 # Load raw image file into memory
-pathToFileInDisk = r'C:/Users/579562/Documents/Projects/Hackathons/2016-07 Hack-a-Terrorist/DallasShooting.png'
+pathToFileInDisk = r'C:/Users/579562/Documents/Projects/Hackathons/2016-07 Hack-a-Terrorist/BostonBombing.png'
 with open( pathToFileInDisk, 'rb' ) as f:
     data = f.read()
 
@@ -92,6 +93,7 @@ json = None
 params = None
 
 result = processRequest(json, data, headers, params )
+print(result)
 
 if result is not None:
     # Load the original image from disk
