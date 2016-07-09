@@ -4,13 +4,12 @@
 import time, requests, operator
 import cv2
 import numpy as np
-#from __future__ import print_function
 
 # Import library to display results
 import matplotlib.pyplot as plt
 
-# Variables
 
+# Variables
 _url = 'https://api.projectoxford.ai/emotion/v1.0/recognize'
 _maxNumRetries = 10
 _key = 'f5fb2f9eb2b54c6c9e09cfb23f8d4a37' #Here you have to paste your primary key
@@ -81,26 +80,27 @@ def renderResultOnImage( result, img ):
         cv2.putText( img, textToWrite, (faceRectangle['left'],faceRectangle['top']-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 1 )
 
 # Load raw image file into memory
-pathToFileInDisk = r'C:/Users/579562/Documents/Projects/Hackathons/2016-07 Hack-a-Terrorist/BostonBombing.png'
-with open( pathToFileInDisk, 'rb' ) as f:
-    data = f.read()
+def processImage(filepath):
+	pathToFileInDisk = filepath
+	with open( pathToFileInDisk, 'rb' ) as f:
+	    data = f.read()
 
-headers = dict()
-headers['Ocp-Apim-Subscription-Key'] = _key
-headers['Content-Type'] = 'application/octet-stream'
+	headers = dict()
+	headers['Ocp-Apim-Subscription-Key'] = _key
+	headers['Content-Type'] = 'application/octet-stream'
 
-json = None
-params = None
+	json = None
+	params = None
 
-result = processRequest(json, data, headers, params )
-print(result)
+	result = processRequest(json, data, headers, params )
+	print(result)
 
-if result is not None:
-    # Load the original image from disk
-    data8uint = np.fromstring( data, np.uint8 ) # Convert string to an unsigned int array
-    img = cv2.cvtColor( cv2.imdecode( data8uint, cv2.IMREAD_COLOR ), cv2.COLOR_BGR2RGB )
+	if result is not None:
+	    # Load the original image from disk
+	    data8uint = np.fromstring( data, np.uint8 ) # Convert string to an unsigned int array
+	    img = cv2.cvtColor( cv2.imdecode( data8uint, cv2.IMREAD_COLOR ), cv2.COLOR_BGR2RGB )
 
-    renderResultOnImage( result, img )
+	    renderResultOnImage( result, img )
 
-    ig, ax = plt.subplots(figsize=(15, 20))
-    ax.imshow( img )
+	    ig, ax = plt.subplots(figsize=(15, 20))
+	    ax.imshow( img )
